@@ -17,7 +17,7 @@
           <span
             class="home-title"
             :class="{ pgray: !nightMode, 'text-light': nightMode }"
-            >Welcome to my portfolio!</span
+            >HALOOOOO!</span
           >
           <div>
             <p v-html="description"></p>
@@ -66,6 +66,7 @@ import Wave from "./helpers/Wave";
 export default {
   name: "Home",
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     Wave,
   },
   props: {
