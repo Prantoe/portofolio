@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ 'bg-white': !nightMode, 'bg-dark': nightMode }"
+    :class="{ 'bg-white': !nightMode, 'bg-dark2': nightMode }"
     class="pt-5 p-st"
   >
     <div
@@ -14,15 +14,18 @@
           <img :src="picture" />
         </div>
         <div class="col-xl-6 col-bg-6 col-md-6 col-sm-12 pt-5">
+         
+            <p>HI THERE ✋ I'AM</p>
+          
           <span
             class="home-title"
             :class="{ pgray: !nightMode, 'text-light': nightMode }"
-            >HALOOOOO!</span
+            >PRANTO SOEARNO</span
           >
           <div>
-            <p v-html="description"></p>
+            <p v-html="job"></p>
           </div>
-          <div class="text-center pb-4">
+          <div class="text-center pb-10">
             <button
               class="btn btn-outline-secondary mx-2 "
               @click="open('linkedin')"
@@ -39,10 +42,10 @@
             </button>
             <button
               class="btn btn-outline-secondary mx-2"
-              @click="open('behance')"
-              v-tooltip.bottom="'behance'"
+              @click="open('instagram')"
+              v-tooltip.bottom="'instagram'"
             >
-              <i class="fab fa-behance"></i>
+              <i class="fab fa-instagram"></i>
             </button>
             <button
               class="btn btn-outline-secondary mx-2"
@@ -77,11 +80,11 @@ export default {
   data() {
     return {
       picture: info.flat_picture,
-      description: info.description,
+      job: info.job,
       name: info.name,
       linkedin: info.links.linkedin,
       github: info.links.github,
-      behance: info.links.behance,
+      instagram: info.links.instagram,
       resume: info.links.resume
     };
   },
@@ -94,8 +97,8 @@ export default {
         case "github":
           window.open(this.github, "_blank");
           break;
-        case "behance":
-          window.open(this.behance, "_blank");
+        case "instagram":
+          window.open(this.instagram, "_blank");
           break;
         case "resume":
           window.open(this.resume, "_blank");
@@ -108,15 +111,25 @@ export default {
 
 <style scoped>
 .home-title {
-  font-size: 32px;
-  font-weight: 500;
+  font-size: 52px;
+  animation-name: bounce;
+  font-weight: bold;
 }
-
+.home-title:hover {
+  font-size: 53px;
+  font-weight: bold;
+}
 img {
   max-width: 800px;
-  max-height: 500px;
-  margin-top: 80px;
-  transform: rotateY(180deg);
+  max-height: 300px;
+  margin-top: 150px;
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(50%);
+}
+img:hover {
+ 
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(10%);
 }
 
 @media only screen and (max-width: 580px) {
@@ -136,13 +149,13 @@ img {
 }
 
 .btn {
-  border-color: #759CC9;
-  color: #759CC9;
+  border-color: #8585ad;
+  color: #8585ad;
 }
 
 .btn:hover {
-  background-color: #759CC9;
-  border-color: #759CC9;
+  background-color: #8585ad;
+  border-color: #8585ad;
   color: white;
 }
 

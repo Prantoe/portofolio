@@ -42,7 +42,7 @@ export default {
   },
   created() {
     if (this.config.use_cookies) {
-      this.nightMode = this.$cookie.get("nightMode") === "true" ? true : false;
+      this.nightMode = this.$cookie.get("nightMode") === "false" ? false : true;
     }
   },
   mounted() {
@@ -80,7 +80,7 @@ export default {
   font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: #000000;
   width: 100%;
 }
 
@@ -97,7 +97,7 @@ export default {
 }
 
 .pgray {
-  color: #535a5e;
+  color: #B0903D;
 }
 
 .pblue {
@@ -105,11 +105,11 @@ export default {
 }
 
 .bg-dark2 {
-  background-color: #262c30 !important;
+  background-color: #000000 !important;
 }
 
 .text-light {
-  color: #d3d2d2 !important;
+  color: #d9d9d9 !important;
 }
 
 .p-st {

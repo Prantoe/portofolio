@@ -138,7 +138,7 @@ button:hover {
 }
 
 nav {
-  border-bottom: 1px solid rgba(160, 159, 159, 0.336);
+  border-bottom: 1px solid rgba(90, 73, 73, 0.336);
   position: fixed !important;
 }
 

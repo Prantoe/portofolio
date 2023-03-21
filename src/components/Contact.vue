@@ -166,15 +166,17 @@ export default {
             config.emailjs.userID
           )
           .then(
+            // eslint-disable-next-line no-unused-vars
             (result) => {
               this.showSnackbar = true;
               this.snackbarMessage = "Thanks! Message recieved.";
               this.snackbarColor = "#1aa260";
 
-              this.email = "";
+              this.email = "suwarnopranto@gmail.com";
               this.text = "";
               this.name = "";
             },
+            // eslint-disable-next-line no-unused-vars
             (error) => {
               this.showSnackbar = true;
               this.snackbarMessage = "Oops! Something went wrong.";
@@ -215,18 +217,18 @@ export default {
   padding: 10px;
   width: 50%;
   transition: all 1s;
-  background-color: #b3b3cc;
+  background-color: #f0f0f0;
 }
 
 .btn {
-  border-color: #759CC9;
-  color: #759CC9;
+  border-color: #8585ad;
+  color: #8585ad;
   width: 50%;
 }
 
 .btn:hover {
-  background-color: #759CC9;
-  border-color: #759CC9;
+  background-color: #8585ad;
+  border-color: #8585ad;
   color: white;
 }
 

@@ -26,7 +26,7 @@
       />
 
       <vue-tabs :activeTextColor="!nightMode ? '#535A5E' : '#dfdfdf'">
-      <v-tab title="design">
+      
           <div class="row">
             <div
               v-for="(design, idx) in desgin_info"
@@ -51,11 +51,13 @@
                 />
               </vueper-slides>
               <div
-                style="width: 100%; display: flex; justify-content: space-between"
+                style="width: 100%; display: flex; justify-content: space-evenly"
                 class="mt-2"
               >
                 <div>
-                  <div class="title2" style="font-weight: 500;">{{ design.title }}</div>
+                  <div class="title2" style="font-weight: 500;">{{ design.title }} •
+                  <span class="date ml-1">{{design.date}}</span></div>
+                  
                   <span
                     class="badge mr-2 mb-2"
                     v-for="tech in design.technologies"
@@ -63,10 +65,16 @@
                     :class="{ 'bg-dark4': nightMode }"
                     >{{ tech }}</span
                   >
-                  •
-                  <span class="date ml-1">{{design.date}}</span>
                 </div>
 
+                <button
+                  style="height: 31px; margin-top: 5px;" href="#"
+                  class="btn-sm btn btn-outline-secondary no-outline"
+                  v-if="design.visit"
+                  @click.prevent="open(design.visit)"
+                >
+                  visit website
+                </button>
                 <button
                   style="height: 31px; margin-top: 5px;"
                   class="btn-sm btn btn-outline-secondary no-outline"
@@ -78,34 +86,8 @@
             </div>
           </div>
           <br />
-        </v-tab>
-        <v-tab title="development">
-          <br />
-          <div class="row">
-            <div
-              class="col-xl-4 col-bg-4 col-md-6 col-sm-12"
-              v-for="(portfolio, idx) in portfolio_info"
-              :key="portfolio.name"
-            >
-              <Card
-                :style="{ 'transition-delay': (idx % 3) / 4.2 + 's' }"
-                :portfolio="portfolio"
-                @show="showModalFn"
-                data-aos="fade-up"
-                :nightMode="nightMode"
-                data-aos-offset="100"
-                data-aos-delay="10"
-                data-aos-duration="500"
-                data-aos-easing="ease-in-out"
-                data-aos-mirror="true"
-                data-aos-once="true"
-              />
-            </div>
-          </div>
-          <div class="text-center py-3" v-if="showBtn !== 'show less'">
-            <button class="btn" @click.prevent="showMore">{{ showBtn }}</button>
-          </div>
-        </v-tab>
+        
+        
       </vue-tabs>
     </div>
     <transition name="modal">
@@ -193,6 +175,9 @@ export default {
   methods: {
     next() {
       this.$refs.flickity.next();
+    },
+    open(url) {
+      window.open(url, "_blank");
     },
 
     previous() {
