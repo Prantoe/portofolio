@@ -89,12 +89,12 @@ let info = {
       title: "Sepasar.id",
       pictures: [
         {
-          img: require("./src/assets/designs/Keep it green/cover.png"),
-          title: "MoodBoard"
+          img: require("./src/assets/portfolio/sepasar/laptop.png"),
+          title: "Website"
         },
         {
-          img: require("./src/assets/designs/Keep it green/show.png"),
-          title: "show"
+          img: require("./src/assets/portfolio/sepasar/iphone.png"),
+          title: "mobile"
         },
       ],
       technologies: ["PHP", "Codeigniter", "Bootstrap"],
