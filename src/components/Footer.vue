@@ -7,7 +7,7 @@
           style="color: white;"
         >
       </div> -->
-      <p class="text-center pbelow">© 2021 Copyright: pranto soearno</p>
+      <p class="text-center pbelow">© 2026 Copyright: Pranto Suwarno</p>
 
         
       <!-- </div> -->

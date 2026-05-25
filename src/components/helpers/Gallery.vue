@@ -15,7 +15,6 @@
           :src="i.img"
           style="width:100%"
           :id="`gi${idx}`"
-          @click="showImg(idx)"
           class="g-img"
         />
         <div class="mt-1">
@@ -106,11 +105,8 @@ export default {
 }
 
 .g-img {
-  cursor: pointer;
+  cursor: default;
   transition: all 0.5s;
-}
-.g-img:hover {
-  opacity: 0.7;
 }
 
 /* The Modal (background) */

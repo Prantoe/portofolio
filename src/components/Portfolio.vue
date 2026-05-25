@@ -25,80 +25,84 @@
         :class="{ pgray: !nightMode, 'bg-secondary': nightMode }"
       />
 
-      <vue-tabs :activeTextColor="!nightMode ? '#535A5E' : '#dfdfdf'">
-      
-          <div class="row">
-            <div
-              v-for="(design, idx) in desgin_info"
-              :key="idx"
-              :class="{ 'mt-4': idx === 0 ? true : true }"
-              class="col-xl-6 col-bg-6 col-md-12 col-sm-12"
-              style="position: relative;"
-            >
+      <div class="row mt-2">
+        <div
+          v-for="(item, idx) in desgin_info"
+          :key="idx"
+          class="col-xl-4 col-md-6 col-sm-12 mb-4"
+          data-aos="fade-up"
+          data-aos-once="true"
+          data-aos-duration="500"
+          :data-aos-delay="idx * 60"
+        >
+          <div
+            class="pcard"
+            :class="{ 'pcard-dark': nightMode, 'pcard-light': !nightMode }"
+          >
+            <div class="pcard-img" @click="showDesignModalFn(item)">
               <vueper-slides
                 :dragging-distance="50"
-                fixed-height="300px"
+                fixed-height="190px"
                 :bullets="false"
-                slide-content-outside="bottom"
-                style="position: aboslute"
-                  @click.prevent="showDesignModalFn(design)"
-
+                :arrows="true"
               >
                 <vueper-slide
-                  v-for="(slide, i) in design.pictures"
+                  v-for="(slide, i) in item.pictures"
                   :key="i"
                   :image="slide.img"
                 />
               </vueper-slides>
-              <div
-                style="width: 100%; display: flex; justify-content: space-evenly"
-                class="mt-2"
-              >
-                <div>
-                  <div class="title2" style="font-weight: 500;">{{ design.title }} •
-                  <span class="date ml-1">{{design.date}}</span></div>
-                  
-                  <span
-                    class="badge mr-2 mb-2"
-                    v-for="tech in design.technologies"
-                    :key="tech"
-                    :class="{ 'bg-dark4': nightMode }"
-                    >{{ tech }}</span
-                  >
-                </div>
+            </div>
 
-                <button
-                  style="height: 31px; margin-top: 5px;" href="#"
-                  class="btn-sm btn btn-outline-secondary no-outline"
-                  v-if="design.visit"
-                  @click.prevent="open(design.visit)"
+            <div class="pcard-body">
+              <div class="pcard-meta">
+                <span class="pcard-category">{{ item.category }}</span>
+                <span class="pcard-date">{{ item.date }}</span>
+              </div>
+              <div
+                class="pcard-title"
+                :class="{ 'text-light': nightMode }"
+              >{{ item.name }}</div>
+              <div class="pcard-subtitle">{{ item.title }}</div>
+
+              <div class="pcard-tags">
+                <span
+                  class="ptag"
+                  v-for="tech in item.technologies.slice(0, 4)"
+                  :key="tech"
+                  :class="{ 'ptag-dark': nightMode }"
+                  >{{ tech }}</span
                 >
-                  visit website
+                <span
+                  v-if="item.technologies.length > 4"
+                  class="ptag ptag-more"
+                  :class="{ 'ptag-dark': nightMode }"
+                  >+{{ item.technologies.length - 4 }}</span
+                >
+              </div>
+
+              <div class="pcard-actions">
+                <button
+                  class="pbtn pbtn-outline"
+                  :class="{ 'pbtn-outline-dark': nightMode }"
+                  @click="showDesignModalFn(item)"
+                >
+                  Details
                 </button>
                 <button
-                  style="height: 31px; margin-top: 5px;"
-                  class="btn-sm btn btn-outline-secondary no-outline"
-                  @click.prevent="showDesignModalFn(design)"
+                  v-if="item.visit"
+                  class="pbtn pbtn-fill"
+                  @click="open(item.visit)"
                 >
-                  read more
+                  Visit ↗
                 </button>
               </div>
             </div>
           </div>
-          <br />
-        
-        
-      </vue-tabs>
+        </div>
+      </div>
     </div>
-    <transition name="modal">
-      <Modal
-        :showModal="showModal"
-        @close="closeModal"
-        v-if="showModal"
-        :portfolio="modal_info"
-        :nightMode="nightMode"
-      />
-    </transition>
+
     <transition name="modal">
       <DesignModal
         :showModal="showDesignModal"
@@ -112,14 +116,8 @@
 </template>
 
 <script>
-import Card from "./helpers/Card";
-import Modal from "./helpers/Modal";
 import DesignModal from "./helpers/DesignModal";
-import Carousel from "./helpers/Carousel";
 import info from "../../info";
-
-import { VueTabs, VTab } from "vue-nav-tabs";
-import "vue-nav-tabs/themes/vue-tabs.css";
 
 import { VueperSlides, VueperSlide } from "vueperslides";
 import "vueperslides/dist/vueperslides.css";
@@ -127,10 +125,6 @@ import "vueperslides/dist/vueperslides.css";
 export default {
   name: "Portfolio",
   components: {
-    Card,
-    Modal,
-    VueTabs,
-    VTab,
     VueperSlides,
     VueperSlide,
     DesignModal,
@@ -142,83 +136,22 @@ export default {
   },
   data() {
     return {
-      all_info: info.portfolio,
       desgin_info: info.portfolio_design,
-      portfolio_info: [],
-      showModal: false,
       showDesignModal: false,
-      modal_info: {},
       design_modal_info: {},
-      number: 3,
-      showBtn: "show more",
-      shower: 0,
-      data: [
-        '<div class="example-slide">Slide 1</div>',
-        '<div class="example-slide">Slide 2</div>',
-        '<div class="example-slide">Slide 3</div>',
-      ],
     };
   },
-  created() {
-    for (var i = 0; i < this.number; i++) {
-      this.portfolio_info.push(this.all_info[i]);
-    }
-  },
-  watch: {
-    number() {
-      this.portfolio_info = [];
-      for (var i = 0; i < this.number; i++) {
-        this.portfolio_info.push(this.all_info[i]);
-      }
-    },
-  },
   methods: {
-    next() {
-      this.$refs.flickity.next();
-    },
     open(url) {
       window.open(url, "_blank");
     },
-
-    previous() {
-      this.$refs.flickity.previous();
-    },
     closeModal() {
-      this.showModal = false;
       this.showDesignModal = false;
       document.getElementsByTagName("body")[0].classList.remove("modal-open");
     },
-    showModalFn(portfolio) {
-      this.modal_info = portfolio;
-      this.showModal = true;
-    },
-    showDesignModalFn(design_portfolio) {
-      this.design_modal_info = design_portfolio;
+    showDesignModalFn(item) {
+      this.design_modal_info = item;
       this.showDesignModal = true;
-    },
-    showMore() {
-      if (this.number != this.all_info.length) {
-        this.number += 3;
-
-        window.scrollBy({
-          top: document.getElementsByClassName("smcard")[0].clientHeight,
-          behavior: "smooth",
-        });
-
-        if (this.number > this.all_info.length)
-          this.number = this.all_info.length;
-      }
-
-      if (this.number == this.all_info.length && this.shower == 0) {
-        this.shower = 1;
-        this.showBtn = "show less";
-      } else if (this.number == this.all_info.length && this.shower == 1) {
-        var elementPosition = document.getElementById("portfolio").offsetTop;
-        window.scrollTo({ top: elementPosition + 5, behavior: "smooth" });
-        this.shower = 0;
-        this.number = 3;
-        this.showBtn = "show more";
-      }
     },
   },
 };
@@ -229,21 +162,194 @@ export default {
   font-size: 30px;
   font-weight: 500;
 }
-.title1 {
-  font-size: 24px;
-  font-weight: 400;
+
+/* Card */
+.pcard {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.title2 {
-  font-size: 20px;
-  font-weight: 400;
+.pcard-light {
+  background-color: #ffffff;
+  border-color: #e4e4e4;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 }
 
-.title3 {
+.pcard-light:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.11);
+  border-color: #8585ad;
+}
+
+.pcard-dark {
+  background-color: #1e2228;
+  border-color: #2e3440;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.pcard-dark:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  border-color: #8585ad;
+}
+
+/* Image area */
+.pcard-img {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/deep/ .vueperslide {
+  border-radius: 0 !important;
+}
+/deep/ .vueperslides__parallax-wrapper {
+  border-radius: 0 !important;
+}
+/deep/ .vueperslides__arrow {
+  outline: none !important;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  background: rgba(0,0,0,0.25);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+
+/* Body */
+.pcard-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pcard-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.pcard-category {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8585ad;
+  background-color: rgba(133, 133, 173, 0.1);
+  border: 1px solid rgba(133, 133, 173, 0.25);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.pcard-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.pcard-title {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
+  margin-bottom: 2px;
+  line-height: 1.3;
 }
 
+.pcard-subtitle {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+/* Tags */
+.pcard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex: 1;
+  align-content: flex-start;
+}
+
+.ptag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: #bbd4dd;
+  color: #444;
+  border: 1px solid #a8c4cf;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.ptag-dark {
+  background-color: #3c4148;
+  color: #ccc;
+  border-color: #4a5058;
+}
+
+.ptag-more {
+  background-color: transparent;
+  color: #8585ad;
+  border-color: rgba(133, 133, 173, 0.3);
+}
+
+/* Actions */
+.pcard-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.pbtn {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.pbtn-outline {
+  background: transparent;
+  border-color: #8585ad;
+  color: #8585ad;
+}
+
+.pbtn-outline:hover {
+  background-color: #8585ad;
+  color: white;
+}
+
+.pbtn-outline-dark {
+  border-color: #8585ad;
+  color: #a0a0c8;
+}
+
+.pbtn-outline-dark:hover {
+  background-color: #8585ad;
+  color: white;
+}
+
+.pbtn-fill {
+  background-color: transparent;
+  border-color: #759CC9;
+  color: #759CC9;
+}
+
+.pbtn-fill:hover {
+  background-color: #759CC9;
+  border-color: #759CC9;
+  color: white;
+}
+
+/* Modal transition */
 .modal-enter {
   opacity: 0;
 }
@@ -256,151 +362,5 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
-}
-
-.btn {
-  border-color: #8585ad;
-  color: #8585ad;
-}
-
-.btn:hover {
-  background-color: #8585ad;
-  border-color: #8585ad;
-  color: white;
-}
-
-.btn:focus {
-  background-color: #8585ad;
-  border-color: #8585ad;
-  color: white;
-}
-
-/deep/ .vue-tabs .nav-tabs {
-  border: none;
-  font-size: 20px;
-  font-weight: 500;
-  display: flex;
-
-  justify-content: center;
-}
-
-/deep/ .vue-tabs .tabs__link {
-  color: #a0a0a0;
-}
-
-/deep/ .vue-tabs .nav-tabs > li.active > a {
-  background: transparent;
-  border: none;
-  transition: all 0.5s;
-  padding-right: 0;
-  padding-left: 0;
-  margin-right: 15px;
-  margin-left: 15px;
-}
-
-/deep/ .vue-tabs .nav-tabs > li > a:hover {
-  background: transparent;
-  color: #cbcbcb;
-  transition: all 0.5s;
-}
-
-/deep/ .vue-tabs .nav-tabs > li > a {
-  background: transparent;
-  border: none;
-  transition: all 0.5s;
-}
-
-/deep/ .vue-tabs .nav-tabs > li > a:after {
-  content: "";
-  width: 20%;
-  position: absolute;
-  bottom: 3px;
-  border-width: 0 0 2px;
-  border-style: solid;
-  transition: all 0.5s;
-}
-
-/deep/ .vue-tabs .nav-tabs > li.active > a:after {
-  width: 100%;
-  transition: all 0.5s;
-}
-
-.design-img {
-  width: 100%;
-  border-radius: 15px;
-  transition: all 0.5s;
-}
-
-.dimg {
-  position: relative;
-  border-radius: 15px;
-}
-.middle {
-  transition: all 0.5s;
-  opacity: 0;
-  position: absolute;
-  bottom: 0px;
-  left: 70px;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  text-align: center;
-  padding: 20px;
-}
-
-.dimg:hover .design-img {
-  position: relative;
-  border-radius: 15px;
-  opacity: 0.1;
-  cursor: pointer;
-}
-
-.dimg:hover .middle {
-  opacity: 1;
-}
-
-/deep/.vueperslide {
-  border-radius: 10px !important;
-}
-/deep/.vueperslides__parallax-wrapper {
-  border-radius: 10px !important;
-}
-
-.btn {
-  border-color: #759CC9;
-  color: #759CC9;
-}
-
-.btn:hover {
-  background-color: #759CC9;
-  border-color: #759CC9;
-  color: white;
-}
-
-.btn:focus {
-  background-color: #759CC9;
-  border-color: #759CC9;
-  color: white;
-}
-/deep/ .vueperslides__arrow {
-  outline: none !important;
-  border: none;
-  color: grey;
-}
-
-.badge {
-  background-color: #bbd4dd;
-  transition: all 0.5s;
-  font-weight: 500;
-  font-size: 13px;
-}
-
-.bg-dark4 {
-  background-color: #494e55 !important;
-}
-
-.date {
-  font-size: 14px;
-  font-weight: 400;
-  opacity: 0.75
 }
 </style>
